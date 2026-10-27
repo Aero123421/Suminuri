@@ -52,6 +52,7 @@ button { font: inherit; color: inherit; }
 .icon:disabled { opacity: .35; cursor: default; }
 .toggle { padding: 0 12px; border-color: var(--line); font-size: 14px; }
 .toggle.on { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+.toggle:disabled { opacity: .45; cursor: default; }
 .primary { padding: 0 16px; background: var(--ink); color: var(--on-ink); font-weight: 600; font-size: 14px; }
 .primary:hover:not(:disabled) { opacity: .88; }
 .primary:disabled { opacity: .35; cursor: default; }
@@ -60,26 +61,36 @@ button { font: inherit; color: inherit; }
 .hint-red { color: var(--red); font-weight: 600; }
 .hint .icon { width: 28px; height: 28px; }
 
-.pages { overflow: auto; padding: 28px 24px 96px; display: flex; flex-direction: column; align-items: center; gap: 28px; }
+.pages { overflow: auto; padding: 28px 24px 96px; display: flex; flex-direction: column; align-items: center; align-items: safe center; gap: 28px; }
 .page { display: grid; gap: 8px; justify-items: center; }
-.sheet { position: relative; background: #fff; box-shadow: var(--shadow); border-radius: 3px; overflow: hidden; }
+.sheet { position: relative; background: #fff; box-shadow: var(--shadow); border-radius: 3px; }
 .sheet-canvas { display: block; }
 .sheet-loading { position: absolute; inset: 0; background: linear-gradient(90deg, #f4f4f5 0%, #fafafa 50%, #f4f4f5 100%); }
 .page-no { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.page-warn { color: var(--red); }
+.sheet-error { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 10px; background: #fafafa; color: #3f3f46; font-size: 14px; }
+.sheet-error p { margin: 0; }
 .foot-note { max-width: 640px; text-align: center; font-size: 12.5px; color: var(--muted); margin: 0; }
 
-.overlay { position: absolute; inset: 0; cursor: crosshair; touch-action: none; user-select: none; }
+/* Touch: a swipe scrolls, a hold draws (see PageView). */
+.overlay { position: absolute; inset: 0; cursor: crosshair; touch-action: pan-x pan-y pinch-zoom; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.overlay.is-waiting { pointer-events: none; }
 .overlay.is-preview { cursor: default; }
 .mark { position: absolute; background: rgba(0, 0, 0, .58); outline: 1.5px solid #000; cursor: move; }
 .overlay.is-preview .mark { background: #000; outline: none; cursor: default; }
 .mark.is-draft { background: rgba(0, 0, 0, .35); outline: 1.5px dashed #000; pointer-events: none; }
 .mark.is-selected { outline: 2px solid var(--select); outline-offset: 1px; }
-.gone { position: absolute; background: var(--red-soft); pointer-events: none; z-index: 2; mix-blend-mode: normal; border-radius: 1px; }
+.gone { position: absolute; background: var(--red-soft); pointer-events: none; z-index: 2; border-radius: 1px; }
+.gone-final { position: absolute; background: #000; pointer-events: none; }
+.mark:focus-visible { outline: 2px solid var(--select); outline-offset: 2px; }
 .handle { position: absolute; width: 11px; height: 11px; background: #fff; border: 2px solid var(--select); border-radius: 2px; z-index: 3; }
+.handle::after { content: ""; position: absolute; inset: -10px; }
 .handle.nw { left: -7px; top: -7px; cursor: nwse-resize; } .handle.se { right: -7px; bottom: -7px; cursor: nwse-resize; }
 .handle.ne { right: -7px; top: -7px; cursor: nesw-resize; } .handle.sw { left: -7px; bottom: -7px; cursor: nesw-resize; }
 .remove { position: absolute; right: -12px; top: -34px; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; border: 0;
   background: var(--select); color: #fff; cursor: pointer; z-index: 4; }
+.remove.below { top: auto; bottom: -34px; }
+.remove::after { content: ""; position: absolute; inset: -8px; }
 
 .zoom { position: fixed; right: 18px; bottom: 18px; display: flex; align-items: center; gap: 2px; padding: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); font-size: 13px; }
 .zoom span { min-width: 46px; text-align: center; font-variant-numeric: tabular-nums; }

@@ -7,16 +7,34 @@ export function normalize(a: { x: number; y: number }, b: { x: number; y: number
   return { x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), w: Math.abs(a.x - b.x), h: Math.abs(a.y - b.y) };
 }
 
-export function overlapArea(a: Box, b: Box): number {
-  const w = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
-  const h = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
-  return w > 0 && h > 0 ? w * h : 0;
+const inside = (x: number, y: number, b: Box) => x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h;
+
+/** Share of a character covered by the union of the boxes, sampled on a 6×4 grid. */
+export function coverage(ch: Box, boxes: readonly Box[]): number {
+  let hit = 0;
+  for (let i = 0; i < 6; i++) for (let j = 0; j < 4; j++) {
+    const x = ch.x + ch.w * (i + 0.5) / 6, y = ch.y + ch.h * (j + 0.5) / 4;
+    if (boxes.some(b => inside(x, y, b))) hit++;
+  }
+  return hit / 24;
 }
 
-/** A character counts as covered when at least a third of it is inside a box. */
-export function covered(ch: Box, boxes: readonly Box[]): boolean {
-  const area = Math.max(ch.w * ch.h, 1e-6);
-  return boxes.some(b => overlapArea(ch, b) / area >= 1 / 3);
+/** A character a box touches meaningfully (a fifth or more) is erased whole. */
+export const COVER_THRESHOLD = 0.2;
+export function coveredChars(chars: readonly CharBox[], boxes: readonly Box[]): CharBox[] {
+  if (!boxes.length) return [];
+  return chars.filter(c => coverage(c, boxes) >= COVER_THRESHOLD);
+}
+
+/** Character boxes are estimates, so paint them with a margin around the glyph. */
+export function padChar(c: Box): Box {
+  const px = Math.max(0.6, c.h * 0.12), py = Math.max(0.4, c.h * 0.06);
+  return { x: c.x - px, y: c.y - py, w: c.w + 2 * px, h: c.h + 2 * py };
+}
+
+/** Everything that will be black in the saved file: the boxes plus every covered character. */
+export function paintBoxes(boxes: readonly Box[], chars: readonly CharBox[]): Box[] {
+  return [...boxes, ...coveredChars(chars, boxes).map(padChar)];
 }
 
 export function clampBox(b: Box, width: number, height: number): Box {
