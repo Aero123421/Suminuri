@@ -1,0 +1,33 @@
+{
+  "name": "suminuri",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Hide personal information in PDFs, images and Office files by drawing boxes. Runs entirely in your browser.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "assets": "node scripts/copy-pdfjs.mjs",
+    "dev": "npm run assets && vite --host 127.0.0.1",
+    "build": "npm run assets && tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test --import tsx tests/*.test.ts",
+    "test:e2e": "node tests/e2e.mjs"
+  },
+  "dependencies": {
+    "fflate": "0.8.3",
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "6.4.299",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.13.10",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
+    "playwright": "1.56.0",
+    "tsx": "4.20.3",
+    "typescript": "5.9.2",
+    "vite": "7.3.7"
+  }
+}
