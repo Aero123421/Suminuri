@@ -15,7 +15,6 @@
     "test:e2e": "node tests/e2e.mjs"
   },
   "dependencies": {
-    "fflate": "0.8.3",
     "pdf-lib": "1.17.1",
     "pdfjs-dist": "6.4.299",
     "react": "18.3.1",
@@ -29,5 +28,10 @@
     "tsx": "4.20.3",
     "typescript": "5.9.2",
     "vite": "7.3.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aero123421/Suminuri.git"
+  },
+  "homepage": "https://aero123421.github.io/Suminuri/"
 }

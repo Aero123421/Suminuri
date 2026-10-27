@@ -1,0 +1,16 @@
+Suminuri
+Copyright 2026 Suminuri contributors
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This software bundles the following third-party components. Their license
+texts are shipped next to them in the built site (pdfjs/*/LICENSE*) and in
+node_modules/<package>/LICENSE.
+
+- PDF.js (pdfjs-dist) — Apache License 2.0 — Mozilla Foundation
+  - CMaps — Adobe Systems, BSD-3-Clause (pdfjs/cmaps/LICENSE)
+  - Foxit standard fonts — PDFium Authors, BSD-3-Clause (pdfjs/standard_fonts/LICENSE_FOXIT)
+  - OpenJPEG decoder — BSD-2-Clause (pdfjs/wasm/LICENSE_OPENJPEG)
+  - JBIG2 decoder — PDFium Authors, BSD-3-Clause (pdfjs/wasm/LICENSE_JBIG2)
+  - qcms — Mozilla, MIT (pdfjs/wasm/LICENSE_QCMS)
+- pdf-lib — MIT — Andrew Dillon
+- React, React DOM — MIT — Meta Platforms, Inc. and affiliates
